@@ -1,36 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { register } from "../actions/userActions";
+import Axios from "axios";
 
 function RegisterScreen(props) {
   console.log("register props", props);
-  //const [userId, setUserId] = userState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
-  const userRegister = useSelector((state) => state.userRegister);
-  const { loading, userInfo = { _id: null }, error } = userRegister;
-  const { _id = null } = userInfo;
-  const dispatch = useDispatch();
-  console.log("userInfo::::", _id);
-  const redirect = props.location.search
-    ? props.location.search.split("=")[1]
-    : "/";
-  console.log("redirect", redirect);
+  const [userId, setUserId] = useState("");
+  console.log("userInfo::::", userId);
   useEffect(() => {
-    if (_id) {
+    if (userId) {
+      console.log("get user Id");
       props.history.push("/signin");
     }
-    return () => {
-      //
-    };
-  }, [_id]);
+  }, [userId]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(register(name, email, password));
+
+    // async function fetchData() {
+    //   try {
+    //     const { data } = await Axios.post("/api/users/register", {
+    //       name,
+    //       email,
+    //       password,
+    //     });
+    //   } catch (error) {
+    //     console.log("error:::", error);
+    //   }
+    // }
+    // fetchData();
+    Axios.post("/api/users/register", {
+      name,
+      email,
+      password,
+    })
+      .then((response) => {
+        // Success
+        setUserId(response.data.response._id);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log("datamesssage", error.message);
+        // Error
+        if (error.response) {
+          console.log("1data", error.response.data);
+          console.log("1status", error.response.status);
+          console.log("1headers", error.response.headers);
+        }
+      });
   };
   return (
     <div className="form">
@@ -39,10 +59,10 @@ function RegisterScreen(props) {
           <li>
             <h2>Create Account</h2>
           </li>
-          <li>
+          {/* <li>
             {loading && <div>Loading...</div>}
             {error && <div>{error}</div>}
-          </li>
+          </li> */}
           <li>
             <label htmlFor="name">Name</label>
             <input
@@ -86,10 +106,7 @@ function RegisterScreen(props) {
           </li>
           <li>
             Already have an account?
-            <Link
-              to={redirect === "/" ? "signin" : "signin?redirect=" + redirect}
-              className="button secondary text-center"
-            >
+            <Link to={"/signin"} className="button secondary text-center">
               Create your amazona account
             </Link>
           </li>
