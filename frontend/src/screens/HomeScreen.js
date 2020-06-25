@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { listProducts } from "../actions/productActions";
 function HomeScreen(props) {
   const productList = useSelector((state) => state.productList);
+  const state = useSelector((state) => state);
+  console.log("HomeScreen- state", state);
   const { products, loading, error } = productList;
   const dispatch = useDispatch();
   useEffect(() => {

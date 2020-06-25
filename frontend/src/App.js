@@ -6,6 +6,7 @@ import ProductScreen from "./screens/ProductScreen";
 import Footer from "./screens/Footer";
 import CartScreen from "./screens/CartScreen";
 import SigninScreen from "./screens/SigninScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 
 function App() {
   const openMenu = () => {
@@ -44,6 +45,7 @@ function App() {
         </aside>
         <main className="main">
           <div className="content">
+            <Route path="/register" component={RegisterScreen} />
             <Route path="/signin" component={SigninScreen} />
             <Route path="/product/:id" component={ProductScreen} />
             <Route path="/cart/:id?" component={CartScreen} />
