@@ -5,13 +5,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function RegisterScreen(props) {
-  console.log("register props", props);
   const [userdetail, setUserDetail] = useState({
     name: "",
     email: "",
     password: "",
   });
-  console.log("userdetail::", userdetail);
   const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoad] = useState(false);
@@ -48,18 +46,7 @@ function RegisterScreen(props) {
     Axios.post("/api/users/register", userdetail)
       .then((response) => {
         setLoad(false);
-        // Success
         setUserId(response.data.response._id);
-        console.log(response);
-        toast.success("Success!\nRegister Sucessfully!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
       })
       .catch((error) => {
         if (error.response) {

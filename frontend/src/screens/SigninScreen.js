@@ -4,22 +4,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { signin } from "../actions/userActions";
 
 function SigninScreen(props) {
-  console.log("SigninScreen props", props);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const userSignin = useSelector((state) => state.userSignin);
   const { loading, userInfo, error } = userSignin;
+  if (userInfo && userInfo.hasOwnProperty("_id")) {
+    props.history.push("/");
+  }
+  //variables states
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const dispatch = useDispatch();
-  const redirect = props.location.search
-    ? props.location.search.split("=")[1]
-    : "/";
   useEffect(() => {
-    if (userInfo) {
-      //  props.history.push(redirect);
+    if (userInfo && userInfo.hasOwnProperty("_id")) {
+      props.history.push("/");
     }
-    return () => {
-      //
-    };
+    return () => {};
   }, [userInfo]);
 
   const submitHandler = (e) => {
@@ -63,9 +62,7 @@ function SigninScreen(props) {
           <li>New to amazona?</li>
           <li>
             <Link
-              to={
-                redirect === "/" ? "register" : "register?redirect=" + redirect
-              }
+              to={props.history.push("/register")}
               className="button secondary text-center"
             >
               Create your amazona account
