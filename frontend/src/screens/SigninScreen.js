@@ -4,9 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { signin } from "../actions/userActions";
 
 function SigninScreen(props) {
+  console.log("sign in screen ", props);
   const userSignin = useSelector((state) => state.userSignin);
   const { loading, userInfo, error } = userSignin;
+  console.log("userSignin", userSignin);
+  const redirect = props.location.search
+    ? props.location.search.split("=")[1]
+    : "/";
   if (userInfo && userInfo.hasOwnProperty("_id")) {
+    console.log("inside:::");
     props.history.push("/");
   }
   //variables states
@@ -16,6 +22,7 @@ function SigninScreen(props) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (userInfo && userInfo.hasOwnProperty("_id")) {
+      console.log("inside::: use effect");
       props.history.push("/");
     }
     return () => {};
@@ -62,7 +69,9 @@ function SigninScreen(props) {
           <li>New to amazona?</li>
           <li>
             <Link
-              to={props.history.push("/register")}
+              to={
+                redirect === "/" ? "register" : "register?redirect=" + redirect
+              }
               className="button secondary text-center"
             >
               Create your amazona account
